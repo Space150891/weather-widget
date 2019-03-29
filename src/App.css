@@ -1,1 +1,38 @@
+.App {
+    background-image: url("assets/day.jpg");
+    background-size: cover;
+    background-position-x: right;
+    
+    
+}
 
+.content {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.content__section {
+    display: flex;
+    color: white;
+    text-shadow: -1px 3px 4px rgba(0,0,0,0.9);
+}
+
+.content__section.content__section--header {
+    color: black;
+    width: 100%;
+    justify-content: space-evenly;
+}
+
+.content__section__right-col {
+    font-size: 160px;
+}
+
+.content__section__left-col {
+    font-size: 36px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
