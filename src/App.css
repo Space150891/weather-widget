@@ -9,7 +9,7 @@
     align-items: center;
 }
 
-.content.content--night {
+.content--night {
     background-image: url("assets/night.jpg");
     background-position: left bottom;
 }

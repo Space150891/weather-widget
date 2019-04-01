@@ -27,6 +27,7 @@ class App extends Component {
   render() {
     const { weatherData, isDay } = this.state;
 
+
     return (
       <div className="App">
         {weatherData ?
