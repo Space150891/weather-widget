@@ -1,12 +1,17 @@
 .content {
     background-image: url("assets/day.jpg");
-    background-size: cover;
     background-position: right bottom;
+    background-size: cover;
     height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+}
+
+.content.content--night {
+    background-image: url("assets/night.jpg");
+    background-position: left bottom;
 }
 
 .content--error {
@@ -29,9 +34,10 @@
     width: 100%;
     justify-content: space-evenly;
     font-size: 24px;
+    text-shadow: none;
 }
 
-.conditions-icon {
+.weather-icon {
     padding-right: 5px;
 }
 
