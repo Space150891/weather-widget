@@ -1,5 +1,5 @@
 .content {
-    background-image: url("assets/day.jpg");
+    background-image: url("https://bladerunnerblade.github.io/weather-widget/assets/day.jpg");
     background-position: right bottom;
     background-size: cover;
     height: 100vh;
@@ -10,7 +10,7 @@
 }
 
 .content--night {
-    background-image: url("assets/night.jpg");
+    background-image: url("https://bladerunnerblade.github.io/weather-widget/assets/night.jpg");
     background-position: left bottom;
 }
 
