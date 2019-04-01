@@ -5,27 +5,42 @@ import axios from 'axios';
 class App extends Component {
   state = {
     weatherData: null,
-    isDay: null
+    isDay: null,
+    date: new Date(),
+    isMetric: true,
+
   };
 
   componentDidMount() {
+    setInterval(() => {
+      this.setState({ date: new Date() })
+    }, 1000);
+    this.getWeatherData();
+  };
+
+  getWeatherData = () => {
     navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => {
-      this.getWeatherData(latitude, longitude);
-      setInterval(() => this.getWeatherData(latitude, longitude), 60000);
+      this.sendRequest(latitude, longitude);
+      setInterval(() => this.sendRequest(latitude, longitude), 60000);
     }, error => {
       console.log(error);
       this.setState({ weatherData: "error" });
     });
-  }
+  };
 
-  getWeatherData = (lat, lon) => {
-    axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&APPID=e8b9b88f679e0bb4cba08f7c992316b5`)
+  sendRequest = (lat, lon) => {
+    axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}${this.state.isMetric ? "&units=metric" : "&units=imperial"}&APPID=e8b9b88f679e0bb4cba08f7c992316b5`)
       .then(({ data }) => this.setState({ weatherData: data, isDay: data.dt > data.sys.sunrise && data.dt < data.sys.sunset ? true : false }))
       .catch(() => this.setState({ weatherData: "error" }))
   };
 
+  changeMeasurement = async () => {
+    await this.setState({ isMetric: !this.state.isMetric });
+    this.getWeatherData();
+  };
+
   render() {
-    const { weatherData, isDay } = this.state;
+    const { weatherData, isDay, isMetric, date } = this.state;
 
 
     return (
@@ -42,9 +57,9 @@ class App extends Component {
               <div className="content__section content__section--temperature">
                 <div className="content__section__right-col">{weatherData.main.temp.toFixed(0)}</div>
                 <div className="content__section__left-col">
-                  <div>°C</div>
-                  <div><i className="fas fa-arrow-up"></i>{weatherData.main.temp_max}°</div>
-                  <div><i className="fas fa-arrow-down"></i>{weatherData.main.temp_min}°</div>
+                  <div onClick={this.changeMeasurement} className="measurement">{isMetric ? "°C" : "°F"}</div>
+                  <div><i className="fas fa-arrow-up"></i>{weatherData.main.temp_max.toFixed(0)}°</div>
+                  <div><i className="fas fa-arrow-down"></i>{weatherData.main.temp_min.toFixed(0)}°</div>
                 </div>
               </div>
               <div className="content__section content__section--location">
@@ -54,15 +69,16 @@ class App extends Component {
                 <p>{weatherData.weather[0].description}</p>
                 <img src={`http://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`} alt="weather icon" height="80" />
               </div>
-              <div className="content__section">
-                <p className="date">{new Date().toDateString()}</p>
+              <div className="footer">
+                <p className="date">{date.toDateString()}</p>
+                <p className="date">{date.toLocaleTimeString()}</p>
               </div>
             </div> :
           <div className="content">
             <div className="container">
               <div className="banner">
                 LOADING
-                <div className="banner-left"></div>
+                  <div className="banner-left"></div>
                 <div className="banner-right"></div>
               </div>
             </div>

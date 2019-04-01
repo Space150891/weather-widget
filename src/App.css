@@ -52,6 +52,12 @@
     justify-content: center;
 }
 
+.measurement:hover {
+  cursor: pointer;
+  color: #f37603;
+  transition: color 0.5s;
+}
+
 .content__section.content__section--location{
     font-size: 26px;
 }
@@ -62,6 +68,12 @@
     color: white;
     text-shadow: -1px 3px 4px rgba(0,0,0,0.9);
     text-align: center;
+}
+
+.footer {
+  color: white;
+  text-align: center;
+  text-shadow: -1px 3px 4px rgba(0,0,0,0.9);
 }
 
 @media screen and (min-width: 481px) {
