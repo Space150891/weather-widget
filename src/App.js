@@ -8,27 +8,29 @@ class App extends Component {
     isDay: null,
     date: new Date(),
     isMetric: true,
-
+    coords: {}
   };
 
   componentDidMount() {
     setInterval(() => {
       this.setState({ date: new Date() })
     }, 1000);
-    this.getWeatherData();
-  };
 
-  getWeatherData = () => {
+
     navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => {
-      this.sendRequest(latitude, longitude);
-      setInterval(() => this.sendRequest(latitude, longitude), 60000);
+      this.setState({ coords: { latitude, longitude } });
+      this.getWeatherData();
+      setInterval(() => this.getWeatherData(), 60000);
     }, error => {
       console.log(error);
       this.setState({ weatherData: "error" });
     });
   };
 
-  sendRequest = (lat, lon) => {
+
+
+  getWeatherData = () => {
+    const { latitude: lat, longitude: lon } = this.state.coords;
     axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}${this.state.isMetric ? "&units=metric" : "&units=imperial"}&APPID=e8b9b88f679e0bb4cba08f7c992316b5`)
       .then(({ data }) => this.setState({ weatherData: data, isDay: data.dt > data.sys.sunrise && data.dt < data.sys.sunset ? true : false }))
       .catch(() => this.setState({ weatherData: "error" }))
@@ -51,7 +53,7 @@ class App extends Component {
             <div className={isDay ? "content" : "content content--night"}>
               <div className="content__section content__section--header">
                 <div><i className="fas fa-cloud weather-icon"></i>{weatherData.clouds.all}%</div>
-                <div><i className="fas fa-wind weather-icon"></i>{weatherData.wind.speed}m/s</div>
+                <div><i className="fas fa-wind weather-icon"></i>{Math.round(weatherData.wind.speed)}{isMetric ? "m/s" : "mi/h"}</div>
                 <div><i className="fas fa-tint weather-icon"></i>{weatherData.main.humidity}%</div>
               </div>
               <div className="content__section content__section--temperature">
@@ -78,7 +80,7 @@ class App extends Component {
             <div className="container">
               <div className="banner">
                 LOADING
-                  <div className="banner-left"></div>
+                <div className="banner-left"></div>
                 <div className="banner-right"></div>
               </div>
             </div>
